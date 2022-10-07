@@ -1,5 +1,6 @@
 package com.ll.exam.sb_security_jwt.app.article.service;
 
+import com.ll.exam.sb_security_jwt.app.article.dto.request.ArticleModifyDto;
 import com.ll.exam.sb_security_jwt.app.article.entity.Article;
 import com.ll.exam.sb_security_jwt.app.article.repository.ArticleRepository;
 import com.ll.exam.sb_security_jwt.app.member.entity.Member;
@@ -41,5 +42,15 @@ public class ArticleService {
 
     public void delete(Article article) {
         articleRepository.delete(article);
+    }
+
+    public void modify(Article article, ArticleModifyDto articleModifyDto) {
+        article.setSubject(articleModifyDto.getSubject());
+        article.setContent(articleModifyDto.getContent());
+        articleRepository.save(article);
+    }
+
+    public boolean authorCanModify(MemberContext memberContext, Article article) {
+        return authorCanDelete(memberContext, article);
     }
 }
