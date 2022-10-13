@@ -22,7 +22,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("")
-    public ResponseEntity<RsData> list(){
+    public ResponseEntity<RsData> list() {
         List<Article> articles = articleService.findAll();
 
         return Util.spring.responseEntityOf(
@@ -35,10 +35,10 @@ public class ArticleController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<RsData> detail(@PathVariable Long id){
+    public ResponseEntity<RsData> detail(@PathVariable Long id) {
         Article article = articleService.findById(id).orElse(null);
 
-        if(article==null){
+        if (article == null) {
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "F-1",
@@ -64,7 +64,7 @@ public class ArticleController {
     ) {
         Article article = articleService.findById(id).orElse(null);
 
-        if(article==null){
+        if (article == null) {
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "F-1",
@@ -74,7 +74,7 @@ public class ArticleController {
             );
         }
 
-        if(articleService.authorCanDelete(memberContext, article) == false){
+        if (articleService.authorCanDelete(memberContext, article) == false) {
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "F-2",
@@ -95,10 +95,10 @@ public class ArticleController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<RsData> modify(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext, @Valid @RequestBody ArticleModifyDto articleModifyDto){
+    public ResponseEntity<RsData> modify(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext, @Valid @RequestBody ArticleModifyDto articleModifyDto) {
         Article article = articleService.findById(id).orElse(null);
 
-        if(article==null){
+        if (article == null) {
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "F-1",
@@ -108,7 +108,7 @@ public class ArticleController {
             );
         }
 
-        if(articleService.authorCanModify(memberContext, article) == false){
+        if (articleService.authorCanModify(memberContext, article) == false) {
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "F-2",

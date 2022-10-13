@@ -1,6 +1,7 @@
 package com.ll.exam.sb_security_jwt.app.security.filter;
 
 import com.ll.exam.sb_security_jwt.app.member.entity.Member;
+import com.ll.exam.sb_security_jwt.app.member.service.MemberService;
 import com.ll.exam.sb_security_jwt.app.security.entity.MemberContext;
 import com.ll.exam.sb_security_jwt.app.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
+    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
                 String username = (String) claims.get("username");
 
-                Member member = Member.fromJwtClaims(claims);
+                Member member = memberService.findByUsername((String)claims.get("username")).get();
 
                 forceAuthentication(member);
             }
