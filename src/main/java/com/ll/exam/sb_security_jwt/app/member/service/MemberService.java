@@ -4,9 +4,6 @@ import com.ll.exam.sb_security_jwt.app.member.entity.Member;
 import com.ll.exam.sb_security_jwt.app.member.repository.MemberRepository;
 import com.ll.exam.sb_security_jwt.app.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -49,22 +46,5 @@ public class MemberService {
 
     public boolean verifyWithWhiteList(Member member, String token) {
         return member.getAccessToken().equals(token);
-    }
-
-    @Cacheable("key1")
-    public int getCachedInt(){
-        System.out.println("getCachedInt 호출됨");
-        return 5;
-    }
-
-    @CacheEvict("key1")
-    public void deleteCacheKey1() {
-        System.out.println("삭제됨");
-    }
-
-    @CachePut("key1")
-    public int putCacheKey1(){
-        System.out.println("수정됨");
-        return 10;
     }
 }
