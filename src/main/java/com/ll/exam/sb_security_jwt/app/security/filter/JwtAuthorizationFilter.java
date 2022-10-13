@@ -1,7 +1,6 @@
 package com.ll.exam.sb_security_jwt.app.security.filter;
 
 import com.ll.exam.sb_security_jwt.app.member.entity.Member;
-import com.ll.exam.sb_security_jwt.app.member.service.MemberService;
 import com.ll.exam.sb_security_jwt.app.security.entity.MemberContext;
 import com.ll.exam.sb_security_jwt.app.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,7 +23,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
-    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,9 +34,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
                 String username = (String) claims.get("username");
-                Member member = memberService.findByUsername(username).orElseThrow(
-                        () -> new UsernameNotFoundException("'%s' Username not found.".formatted(username))
-                );
+
+                Member member = Member.fromJwtClaims(claims);
 
                 forceAuthentication(member);
             }

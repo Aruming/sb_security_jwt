@@ -3,6 +3,3 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/sb_security_jwt_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: Aruming
     password: Aruming
-  jpa:
-    hibernate:
-      ddl-auto: create
